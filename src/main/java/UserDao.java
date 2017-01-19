@@ -3,10 +3,15 @@ import java.sql.*;
 /**
  * Created by gesap on 2017-01-18.
  */
-public abstract class UserDao {
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+public class UserDao {
+    private  SimpleConnectionMaker simpleConnectionMaker;
 
+    public UserDao() {
+        this.simpleConnectionMaker = new SimpleConnectionMaker();
+    }
+
+    public void add(User user) throws ClassNotFoundException, SQLException {
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values(?,?,?)");
@@ -22,7 +27,7 @@ public abstract class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException{
 
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?");
@@ -43,10 +48,5 @@ public abstract class UserDao {
 
         return user;
     }
-
-
-    protected abstract Connection getConnection() throws ClassNotFoundException, SQLException;
-
-
 
 }
