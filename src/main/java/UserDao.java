@@ -4,14 +4,14 @@ import java.sql.*;
  * Created by gesap on 2017-01-18.
  */
 public class UserDao {
-    private  SimpleConnectionMaker simpleConnectionMaker;
+    private ConnectionMaker connectionMaker;
 
     public UserDao() {
-        this.simpleConnectionMaker = new SimpleConnectionMaker();
+        this.connectionMaker= new DConnectionMaker(); //여기에 클래스 이름이 명시되어 버렸음
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = simpleConnectionMaker.makeNewConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values(?,?,?)");
@@ -27,7 +27,7 @@ public class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException{
 
-        Connection c = simpleConnectionMaker.makeNewConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select * from users where id = ?");
