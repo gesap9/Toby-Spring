@@ -1,11 +1,15 @@
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by gesap on 2017-01-18.
+ * Created by gesap on 2017-01-19.
  */
-public class TestApp {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+public class UserDaoTest {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException{
+        //UserDao가 사용할 ConnectionMaker 구현 클래스를 결정하고 오브젝트를 만듬
+        ConnectionMaker connectionMaker = new DConnectionMaker();
+
+        UserDao dao = new UserDao(connectionMaker);
 
         User user = new User();
         user.setId("whiteship");
@@ -21,8 +25,6 @@ public class TestApp {
         System.out.println(user2.getPassword());
 
         System.out.println(user2.getId() + "조회 성공");
-
-
 
 
 
