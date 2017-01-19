@@ -4,6 +4,8 @@ import java.sql.*;
  * Created by gesap on 2017-01-18.
  */
 public class UserDao {
+    //읽기 전용 정보이기 떄문에 멤버 변수로 사용해도 상관없다.
+    //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
     private ConnectionMaker connectionMaker;
 
     public UserDao(ConnectionMaker connectionMaker) {
