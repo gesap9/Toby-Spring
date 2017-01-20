@@ -8,9 +8,10 @@ public class UserDao {
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
     private ConnectionMaker connectionMaker;
 
-    public UserDao(ConnectionMaker connectionMaker) {
+    public void setConnectionMaker(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
     }
+
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection c = connectionMaker.makeConnection();
