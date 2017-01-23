@@ -1,3 +1,4 @@
+import javafx.scene.chart.PieChart;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -5,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
 /**
  * Created by gesap on 2017-01-19.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
+@DirtiesContext //테스트 메소드에서 애플리케이션 컨텍스트의 구성이나 상태를 변경한다는 것을 테스트 컨텍스트 프레임워크에 알려준다
 public class UserDaoTest {
     @Autowired
     private UserDao dao;
@@ -28,17 +34,23 @@ public class UserDaoTest {
     private ApplicationContext context;
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
         System.out.println(this.context);
         System.out.println(this);
+
+        DataSource dataSource = new SingleConnectionDataSource(
+                "jdbc:mysql://localhost/testdb","com","com01",true
+        );
+        dao.setDataSource(dataSource);
 
         user1 = new User("park", "박성철", "park123");
         user2 = new User("lee", "이노옴", "lee123");
         user3 = new User("kim", "김하가", "kim123");
     }
+
     @Test
-    public void count() throws  SQLException, ClassNotFoundException{
+    public void count() throws SQLException, ClassNotFoundException {
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
@@ -53,8 +65,9 @@ public class UserDaoTest {
         assertThat(dao.getCount(), is(3));
 
     }
+
     @Test
-    public  void addAndGet() throws SQLException, ClassNotFoundException {
+    public void addAndGet() throws SQLException, ClassNotFoundException {
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
@@ -65,12 +78,13 @@ public class UserDaoTest {
 
         User userget1 = dao.get(user1.getId());
         assertThat(userget1.getName(), is(user1.getName()));
-        assertThat(userget1.getPassword(),is(user1.getPassword()));
+        assertThat(userget1.getPassword(), is(user1.getPassword()));
 
         User userget2 = dao.get(user2.getId());
         assertThat(user2.getName(), is(user2.getName()));
-        assertThat(user2.getPassword(),is(user2.getPassword()));
+        assertThat(user2.getPassword(), is(user2.getPassword()));
     }
+
     @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException, ClassNotFoundException {
         dao.deleteAll();
@@ -78,7 +92,6 @@ public class UserDaoTest {
 
         dao.get("unknown id");
     }
-
 
 
 }

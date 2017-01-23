@@ -25,5 +25,4 @@ public class DaoFactory {
 
         return dataSource;
     }
-
 }
