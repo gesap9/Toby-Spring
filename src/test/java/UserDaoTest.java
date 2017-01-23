@@ -61,7 +61,18 @@ public class UserDaoTest {
         assertThat(user2.getName(), is(user2.getName()));
         assertThat(user2.getPassword(),is(user2.getPassword()));
     }
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getUserFailure() throws SQLException, ClassNotFoundException {
+        //XML방식
+        ApplicationContext context =
+                new GenericXmlApplicationContext("applicationContext.xml");
+        UserDao dao = context.getBean("userDao", UserDao.class);
 
+        dao.deleteAll();
+        assertThat(dao.getCount(), is(0));
+
+        dao.get("unknown id");
+    }
 
 }
 

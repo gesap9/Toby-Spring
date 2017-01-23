@@ -1,3 +1,5 @@
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import javax.sql.DataSource;
 import java.sql.*;
 
@@ -28,20 +30,20 @@ public class UserDao {
         c.close();
     }
 
-    public void deleteAll() throws SQLException{
+    public void deleteAll() throws SQLException {
         Connection c = dataSource.getConnection();
         PreparedStatement ps = c.prepareStatement(
                 "delete from users");
         ps.executeUpdate();
     }
 
-    public int getCount() throws SQLException{
+    public int getCount() throws SQLException {
         Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "select count(*) from users");
 
-        ResultSet rs =ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
         rs.next();
         int count = rs.getInt(1);
 
@@ -53,7 +55,7 @@ public class UserDao {
         return count;
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException{
+    public User get(String id) throws ClassNotFoundException, SQLException {
 
         Connection c = dataSource.getConnection();
 
@@ -61,19 +63,24 @@ public class UserDao {
                 "select * from users where id = ?");
         ps.setString(1, id);
 
-        ResultSet rs =ps.executeQuery();
-        rs.next();
+        ResultSet rs = ps.executeQuery();
 
-        User user = new User();
-        user.setId(rs.getString("id"));
-        user.setName(rs.getString("name"));
-        user.setPassword(rs.getString("password"));
+        User user = null;
 
+        if (rs.next()) {
+            user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+        }
 
         rs.close();
         ps.close();
         c.close();
 
+        if(user ==null){
+            throw new EmptyResultDataAccessException(1);
+        }
         return user;
     }
 
