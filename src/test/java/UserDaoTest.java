@@ -21,8 +21,7 @@ import static org.junit.Assert.assertThat;
  * Created by gesap on 2017-01-19.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
-@DirtiesContext //테스트 메소드에서 애플리케이션 컨텍스트의 구성이나 상태를 변경한다는 것을 테스트 컨텍스트 프레임워크에 알려준다
+@ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserDaoTest {
     @Autowired
     private UserDao dao;
@@ -38,11 +37,6 @@ public class UserDaoTest {
 
         System.out.println(this.context);
         System.out.println(this);
-
-        DataSource dataSource = new SingleConnectionDataSource(
-                "jdbc:mysql://localhost/testdb","com","com01",true
-        );
-        dao.setDataSource(dataSource);
 
         user1 = new User("park", "박성철", "park123");
         user2 = new User("lee", "이노옴", "lee123");
