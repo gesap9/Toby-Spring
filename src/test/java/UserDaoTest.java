@@ -13,18 +13,25 @@ import static org.junit.Assert.assertThat;
  */
 public class UserDaoTest {
     private UserDao dao;
+    private User user1;
+    private User user2;
+    private User user3;
+
+
     @Before
+
     public void setUp(){
+
         ApplicationContext context =
                 new GenericXmlApplicationContext("applicationContext.xml");
 
         dao = context.getBean("userDao", UserDao.class);
+        user1 = new User("park", "박성철", "park123");
+        user2 = new User("lee", "이노옴", "lee123");
+        user3 = new User("kim", "김하가", "kim123");
     }
     @Test
     public void count() throws  SQLException, ClassNotFoundException{
-        User user1 = new User("park", "박성철", "park123");
-        User user2 = new User("lee", "이노옴", "lee123");
-        User user3 = new User("kim", "김하가", "kim123");
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
@@ -41,8 +48,6 @@ public class UserDaoTest {
     }
     @Test
     public  void addAndGet() throws SQLException, ClassNotFoundException {
-        User user1 = new User("park", "박성철", "park123");
-        User user2 = new User("lee", "이노옴", "lee123");
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
