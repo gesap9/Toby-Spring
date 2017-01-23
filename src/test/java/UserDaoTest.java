@@ -1,3 +1,4 @@
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -11,13 +12,16 @@ import static org.junit.Assert.assertThat;
  * Created by gesap on 2017-01-19.
  */
 public class UserDaoTest {
-    @Test
-    public void count() throws  SQLException, ClassNotFoundException{
+    private UserDao dao;
+    @Before
+    public void setUp(){
         ApplicationContext context =
                 new GenericXmlApplicationContext("applicationContext.xml");
 
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
+        dao = context.getBean("userDao", UserDao.class);
+    }
+    @Test
+    public void count() throws  SQLException, ClassNotFoundException{
         User user1 = new User("park", "박성철", "park123");
         User user2 = new User("lee", "이노옴", "lee123");
         User user3 = new User("kim", "김하가", "kim123");
@@ -37,12 +41,6 @@ public class UserDaoTest {
     }
     @Test
     public  void addAndGet() throws SQLException, ClassNotFoundException {
-        //XML방식
-        ApplicationContext context =
-                new GenericXmlApplicationContext("applicationContext.xml");
-
-
-        UserDao dao = context.getBean("userDao", UserDao.class);
         User user1 = new User("park", "박성철", "park123");
         User user2 = new User("lee", "이노옴", "lee123");
 
@@ -63,16 +61,13 @@ public class UserDaoTest {
     }
     @Test(expected = EmptyResultDataAccessException.class)
     public void getUserFailure() throws SQLException, ClassNotFoundException {
-        //XML방식
-        ApplicationContext context =
-                new GenericXmlApplicationContext("applicationContext.xml");
-        UserDao dao = context.getBean("userDao", UserDao.class);
-
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
 
         dao.get("unknown id");
     }
+
+
 
 }
 
