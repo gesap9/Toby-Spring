@@ -18,6 +18,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
 public class UserDaoTest {
+    @Autowired
     private UserDao dao;
     private User user1;
     private User user2;
@@ -32,7 +33,6 @@ public class UserDaoTest {
         System.out.println(this.context);
         System.out.println(this);
 
-        dao = context.getBean("userDao", UserDao.class);
         user1 = new User("park", "박성철", "park123");
         user2 = new User("lee", "이노옴", "lee123");
         user3 = new User("kim", "김하가", "kim123");
