@@ -20,23 +20,25 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by gesap on 2017-01-19.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserDaoTest {
-    @Autowired
     private UserDao dao;
     private User user1;
     private User user2;
     private User user3;
 
-    @Autowired
     private ApplicationContext context;
 
     @Before
     public void setUp() {
+        dao = new UserDao();
+        DataSource dataSource = new SingleConnectionDataSource(
+                "jdbc:mysql://localhost/testdb",
+                "com",
+                "com01",
+                true
 
-        System.out.println(this.context);
-        System.out.println(this);
+        );
+        dao.setDataSource(dataSource);
 
         user1 = new User("park", "박성철", "park123");
         user2 = new User("lee", "이노옴", "lee123");
