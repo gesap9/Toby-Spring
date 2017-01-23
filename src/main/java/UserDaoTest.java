@@ -10,15 +10,15 @@ import java.sql.SQLException;
  */
 public class UserDaoTest {
     public static void main(String[] args) throws ClassNotFoundException, SQLException{
-        /*XML방식
-
+        //XML방식
         ApplicationContext context =
                 new GenericXmlApplicationContext("applicationContext.xml");
-        */
 
+        /*
+        //Java 설정 방식
         ApplicationContext context =
                 new AnnotationConfigApplicationContext(DaoFactory.class);
-
+        */
         User user = new User();
         user.setId("whiteship");
         user.setName("백기선");
