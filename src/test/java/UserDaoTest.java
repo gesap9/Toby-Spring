@@ -1,8 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
 
@@ -11,19 +15,22 @@ import static org.junit.Assert.assertThat;
 /**
  * Created by gesap on 2017-01-19.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class UserDaoTest {
     private UserDao dao;
     private User user1;
     private User user2;
     private User user3;
 
+    @Autowired
+    private ApplicationContext context;
 
     @Before
-
     public void setUp(){
 
-        ApplicationContext context =
-                new GenericXmlApplicationContext("applicationContext.xml");
+        System.out.println(this.context);
+        System.out.println(this);
 
         dao = context.getBean("userDao", UserDao.class);
         user1 = new User("park", "박성철", "park123");
