@@ -33,8 +33,4 @@ public class UserDaoTest {
 
     }
 }
-class JunitTest{
-    public static void main(String[] args) {
-        JUnitCore.main("UserDaoTest");
-    }
-}
+
