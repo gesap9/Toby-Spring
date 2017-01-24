@@ -7,13 +7,11 @@ import java.sql.*;
 /**
  * Created by gesap on 2017-01-18.
  */
-public abstract class UserDao {
+public class UserDao {
     //읽기 전용 정보이기 떄문에 멤버 변수로 사용해도 상관없다.
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
 
     private DataSource dataSource;
-
-    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -39,8 +37,9 @@ public abstract class UserDao {
         PreparedStatement ps = null;
         try {
             c = dataSource.getConnection();
-            ps = c.prepareStatement(
-                    "delete from users");
+            StatementStrategy strategy = new DeleteAllStatement();
+            ps = strategy.makePreparedStatement(c);
+            //컨텍스트 안에서 이미 구체적인 전략 클래스인 DeleteAllStatement를 사용하도록 고정되어 있으면 이상함
             ps.executeUpdate();
         } catch (SQLException e) {
             throw e;
