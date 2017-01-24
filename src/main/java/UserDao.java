@@ -16,10 +16,8 @@ public class UserDao {
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public void setJdbcContext(JdbcContext jdbcContext) {
-        this.jdbcContext = jdbcContext;
+        this.jdbcContext = new JdbcContext();
+        this.jdbcContext.setDataSource(dataSource);
     }
 
     //Parameter를 final로 선언해줘야 한다.
