@@ -9,6 +9,18 @@ import java.sql.SQLException;
 public class JdbcContext {
     private DataSource dataSource;
 
+    public void executeSql(final String query) throws SQLException {
+        //전략생성
+        workWithStatementStrategy(
+                new StatementStrategy() {
+                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+                        PreparedStatement ps = c.prepareStatement(query);
+                        return ps;
+                    }
+                }
+        );
+    }
+
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
