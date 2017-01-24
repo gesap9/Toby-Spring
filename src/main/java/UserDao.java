@@ -17,29 +17,14 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = dataSource.getConnection();
 
-        PreparedStatement ps = c.prepareStatement(
-                "insert into users(id, name, password) values(?,?,?)");
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-
-        ps.close();
-        c.close();
-    }
-
-    public void deleteAll() throws SQLException {
+    //JDBC CONTEXT
+    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws  SQLException{
         Connection c = null;
         PreparedStatement ps = null;
         try {
             c = dataSource.getConnection();
-            StatementStrategy strategy = new DeleteAllStatement();
-            ps = strategy.makePreparedStatement(c);
-            //컨텍스트 안에서 이미 구체적인 전략 클래스인 DeleteAllStatement를 사용하도록 고정되어 있으면 이상함
+            ps = stmt.makePreparedStatement(c);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -59,6 +44,28 @@ public class UserDao {
                 }
             }
         }
+    }
+
+
+    public void add(User user) throws ClassNotFoundException, SQLException {
+        Connection c = dataSource.getConnection();
+
+        PreparedStatement ps = c.prepareStatement(
+                "insert into users(id, name, password) values(?,?,?)");
+        ps.setString(1, user.getId());
+        ps.setString(2, user.getName());
+        ps.setString(3, user.getPassword());
+
+        ps.executeUpdate();
+
+        ps.close();
+        c.close();
+    }
+
+    public void deleteAll() throws SQLException {
+        //전략생성
+        StatementStrategy st = new DeleteAllStatement();
+        jdbcContextWithStatementStrategy(st);
     }
 
     public int getCount() throws SQLException {
