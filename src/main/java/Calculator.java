@@ -1,0 +1,22 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ * Created by gesap on 2017-01-24.
+ */
+public class Calculator {
+    public Integer calcSum(String filepath) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filepath));
+        Integer sum = 0;
+        String line = null;
+        while((line = br.readLine()) != null){
+            sum += Integer.valueOf(line);
+        }
+
+        br.close();
+        return sum;
+
+    }
+}
