@@ -1,5 +1,6 @@
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,36 +13,22 @@ public class UserDao {
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
 
     private DataSource dataSource;
-    private JdbcContext jdbcContext;
+    private JdbcTemplate jdbcTemplate;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.jdbcContext = new JdbcContext();
-        this.jdbcContext.setDataSource(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     //Parameter를 final로 선언해줘야 한다.
     public void add(final User user) throws ClassNotFoundException, SQLException {
-        this.jdbcContext.workWithStatementStrategy(
-                new StatementStrategy() {
-                    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
-                        PreparedStatement ps = c.prepareStatement(
-                                "insert into users(id, name, password) values(?,?,?)");
-                        ps.setString(1, user.getId());
-                        ps.setString(2, user.getName());
-                        ps.setString(3, user.getPassword());
+        this.jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)", user.getId(), user.getName(), user.getPassword());
 
-                        return ps;
-                    }
-                }
-        );
     }
 
-    public void deleteAll() throws SQLException{
-        this.jdbcContext.executeSql("delete from users");
+    public void deleteAll() throws SQLException {
+        this.jdbcTemplate.update("delete from users");
     }
-
-
 
 
     public int getCount() throws SQLException {
@@ -59,24 +46,24 @@ public class UserDao {
         } catch (SQLException e) {
             throw e;
         } finally {
-            if(rs != null){
-                try{
+            if (rs != null) {
+                try {
                     rs.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     //todo
                 }
             }
-            if(ps != null){
-                try{
+            if (ps != null) {
+                try {
                     ps.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     //todo
                 }
             }
-            if(c != null){
-                try{
+            if (c != null) {
+                try {
                     c.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     //todo
                 }
             }
