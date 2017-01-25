@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 /**
  * Created by gesap on 2017-01-18.
@@ -53,5 +54,21 @@ public class UserDao {
                 }
         );
     }
+
+    public List<User> getAll(){
+        return this.jdbcTemplate.query("select * from users order by id",
+                new RowMapper<User>() {
+                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        User user = new User();
+                        user.setId(rs.getString("id"));
+                        user.setName(rs.getString("name"));
+                        user.setPassword(rs.getString("password"));
+
+                        return user;
+                    }
+                });
+
+    }
+
 
 }
