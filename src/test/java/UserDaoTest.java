@@ -38,9 +38,9 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        user1 = new User("park", "박성철", "park123");
-        user2 = new User("lee", "이노옴", "lee123");
-        user3 = new User("kim", "김하가", "kim123");
+        user1 = new User("park", "박성철", "park123",Level.BASIC,1,0);
+        user2 = new User("lee", "이노옴", "lee123",Level.SILVER,20,30);
+        user3 = new User("kim", "김하가", "kim123",Level.GOLD,33,1);
     }
     @Test
     public void sqlExceptionTranslate(){
@@ -92,7 +92,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void addAndGet() throws SQLException, ClassNotFoundException {
+    public void addAndGet(){
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));
@@ -102,12 +102,10 @@ public class UserDaoTest {
         assertThat(dao.getCount(), is(2));
 
         User userget1 = dao.get(user1.getId());
-        assertThat(userget1.getName(), is(user1.getName()));
-        assertThat(userget1.getPassword(), is(user1.getPassword()));
+        checkSameUser(userget1, user1);
 
         User userget2 = dao.get(user2.getId());
-        assertThat(user2.getName(), is(user2.getName()));
-        assertThat(user2.getPassword(), is(user2.getPassword()));
+        checkSameUser(userget2, user2);
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -150,6 +148,9 @@ public class UserDaoTest {
         assertThat(user1.getId(), is(user2.getId()));
         assertThat(user1.getName(), is(user2.getName()));
         assertThat(user1.getPassword(), is(user2.getPassword()));
+        assertThat(user1.getLevel(), is(user2.getLevel()));
+        assertThat(user1.getLogin(), is(user2.getLogin()));
+        assertThat(user1.getRecommend(), is(user2.getRecommend()));
     }
 
 
