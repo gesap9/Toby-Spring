@@ -16,12 +16,19 @@ import java.util.List;
 public class UserDao {
     //읽기 전용 정보이기 떄문에 멤버 변수로 사용해도 상관없다.
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
-
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
+    private RowMapper<User> userMapper =
+            new RowMapper<User>() {
+                public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    User user = new User();
+                    user.setId(rs.getString("id"));
+                    user.setName(rs.getString("name"));
+                    user.setPassword(rs.getString("password"));
+                    return user;
+                }
+            };
 
     public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -43,30 +50,14 @@ public class UserDao {
     public User get(String id) throws ClassNotFoundException, SQLException {
         return this.jdbcTemplate.queryForObject("select * from users where id = ?",
                 new Object[]{id},
-                new RowMapper<User>() {
-                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setName(rs.getString("name"));
-                        user.setPassword(rs.getString("password"));
-                        return user;
-                    }
-                }
+                userMapper
         );
     }
 
-    public List<User> getAll(){
+    public List<User> getAll() {
         return this.jdbcTemplate.query("select * from users order by id",
-                new RowMapper<User>() {
-                    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setName(rs.getString("name"));
-                        user.setPassword(rs.getString("password"));
-
-                        return user;
-                    }
-                });
+                userMapper
+        );
 
     }
 
