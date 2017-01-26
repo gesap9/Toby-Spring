@@ -38,16 +38,16 @@ public class UserDao {
 
     }
 
-    public void deleteAll() throws SQLException {
+    public void deleteAll() {
         this.jdbcTemplate.update("delete from users");
     }
 
 
-    public int getCount() throws SQLException {
+    public int getCount() {
         return this.jdbcTemplate.queryForInt("select count(*) from users");
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
+    public User get(String id) {
         return this.jdbcTemplate.queryForObject("select * from users where id = ?",
                 new Object[]{id},
                 userMapper
@@ -58,8 +58,5 @@ public class UserDao {
         return this.jdbcTemplate.query("select * from users order by id",
                 userMapper
         );
-
     }
-
-
 }
