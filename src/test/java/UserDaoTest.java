@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,6 +32,13 @@ public class UserDaoTest {
         user1 = new User("park", "박성철", "park123");
         user2 = new User("lee", "이노옴", "lee123");
         user3 = new User("kim", "김하가", "kim123");
+    }
+    @Test(expected = DataAccessException.class)
+    public void duplicatedKey(){
+        dao.deleteAll();
+
+        dao.add(user1);
+        dao.add(user1);//강제로 같은 사용자 두 번 등록
     }
 
     @Test
