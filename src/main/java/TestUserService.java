@@ -20,11 +20,7 @@ public class TestUserService extends UserService {
 
 
     public void upgradeLevels() throws Exception {
-        PlatformTransactionManager transactionManager =
-                new DataSourceTransactionManager(dataSource);
-
-        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-
+        TransactionStatus status = this.transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
             List<User> users = userDao.getAll();
             for (User user : users) {
@@ -37,12 +33,11 @@ public class TestUserService extends UserService {
                     }
                 }
             }
-            transactionManager.commit(status);
+            this.transactionManager.commit(status);
         } catch (Exception e) {
-            transactionManager.rollback(status);
+            this.transactionManager.rollback(status);
             throw e;
         }
-
 
     }
 }
