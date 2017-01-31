@@ -1,3 +1,8 @@
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,17 +15,34 @@ public class TestUserService extends UserService {
     }
 
 
-    public void upgradeLevels() {
-        List<User> users = userDao.getAll();
-        for (User user : users) {
-            if (userLevelUpgradePolicy.canUpgradeLevel(user)) {
-                if(user.getId().equals(this.id)){
-                    throw new TestUserServiceException();
+    public void upgradeLevels() throws Exception {
 
-                }else {
-                    userLevelUpgradePolicy.upgradeLevel(user);
+
+        TransactionSynchronizationManager.initSynchronization();
+        Connection c = DataSourceUtils.getConnection(dataSource);
+        c.setAutoCommit(false);
+
+        try {
+            List<User> users = userDao.getAll();
+            for (User user : users) {
+                if (userLevelUpgradePolicy.canUpgradeLevel(user)) {
+                    if(user.getId().equals(this.id)){
+                        throw new TestUserServiceException();
+
+                    }else {
+                        userLevelUpgradePolicy.upgradeLevel(user);
+                    }
                 }
             }
+            c.commit();
+        } catch (Exception e) {
+            c.rollback();
+            throw e;
+        } finally {
+
+            DataSourceUtils.releaseConnection(c,dataSource);
+            TransactionSynchronizationManager.unbindResource(this.dataSource);
+            TransactionSynchronizationManager.clearSynchronization();
         }
     }
 }
