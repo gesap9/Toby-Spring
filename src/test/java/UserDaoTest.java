@@ -38,9 +38,9 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        user1 = new User("park", "박성철", "park123",Level.BASIC,1,0);
-        user2 = new User("lee", "이노옴", "lee123",Level.SILVER,20,30);
-        user3 = new User("kim", "김하가", "kim123",Level.GOLD,33,1);
+        user1 = new User("park", "박성철", "park123",Level.BASIC,1,0, "park@mail.com");
+        user2 = new User("lee", "이노옴", "lee123",Level.SILVER,20,30, "lee@mail.com");
+        user3 = new User("kim", "김하가", "kim123",Level.GOLD,33,1,"kim@mail.com");
     }
     @Test
     public void update(){
@@ -53,6 +53,7 @@ public class UserDaoTest {
         user1.setLevel(Level.GOLD);
         user1.setLogin(1000);
         user1.setRecommend(999);
+        user1.setEmail("new@mail.com");
 
         dao.update(user1);
 
@@ -172,6 +173,7 @@ public class UserDaoTest {
         assertThat(user1.getLevel(), is(user2.getLevel()));
         assertThat(user1.getLogin(), is(user2.getLogin()));
         assertThat(user1.getRecommend(), is(user2.getRecommend()));
+        assertThat(user1.getEmail(), is(user2.getEmail()));
     }
 
 
