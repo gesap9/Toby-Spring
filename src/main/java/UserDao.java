@@ -13,4 +13,6 @@ public interface UserDao {
     User get(String id);
 
     List<User> getAll();
+
+    void update(User user);
 }
