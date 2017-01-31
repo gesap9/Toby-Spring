@@ -5,6 +5,7 @@
 
     <bean id="userService" class="UserService">
         <property name="userDao" ref="userDao"/>
+        <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
     </bean>
 
     <bean id="dataSource"
@@ -13,6 +14,11 @@
         <property name="url" value="jdbc:mysql://localhost/testdb"/>
         <property name="username" value="com"/>
         <property name="password" value="com01"/>
+
+    </bean>
+
+    <bean id="userLevelUpgradePolicy" class="UserLevelUpgradePolicyImpl">
+        <property name="userDao" ref ="userDao"/>
 
     </bean>
 
