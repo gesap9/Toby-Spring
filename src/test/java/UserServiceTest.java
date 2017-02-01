@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
-import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
     @Autowired
+    UserServiceImpl userServiceImpl;
+    @Autowired
     private UserDao userDao;
     @Autowired
     private UserLevelUpgradePolicy userLevelUpgradePolicy;
@@ -36,10 +37,10 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         users = Arrays.asList(
-                new User("bumjin", "박범진", "p1", Level.BASIC, UserService.MIN_LOGCOUNT_FOR_SILVER - 1, 0, "bumjin@mail.com"),
-                new User("joytouch", "강명성", "p2", Level.BASIC, UserService.MIN_LOGCOUNT_FOR_SILVER, 0, "joytouch@mail.com"),
-                new User("erwins", "신승한", "p3", Level.SILVER, 60, UserService.MIN_RECOMMEND_FOR_GOLD - 1, "erwins@mail.com"),
-                new User("madnite1", "이상호", "p4", Level.SILVER, 60, UserService.MIN_RECOMMEND_FOR_GOLD, "madnitel1@mail.com"),
+                new User("bumjin", "박범진", "p1", Level.BASIC, UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER - 1, 0, "bumjin@mail.com"),
+                new User("joytouch", "강명성", "p2", Level.BASIC, UserServiceImpl.MIN_LOGCOUNT_FOR_SILVER, 0, "joytouch@mail.com"),
+                new User("erwins", "신승한", "p3", Level.SILVER, 60, UserServiceImpl.MIN_RECOMMEND_FOR_GOLD - 1, "erwins@mail.com"),
+                new User("madnite1", "이상호", "p4", Level.SILVER, 60, UserServiceImpl.MIN_RECOMMEND_FOR_GOLD, "madnitel1@mail.com"),
                 new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "green@mail.com")
 
         );
@@ -47,16 +48,19 @@ public class UserServiceTest {
 
     @Test
     public void upgradeAllOrNothing() throws Exception {
-        UserService testUserService = new TestUserService(users.get(3).getId());
+        TestUserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
         testUserService.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
-        testUserService.setTransactionManager(transactionManager);
+
+        UserServiceTx txUserService = new UserServiceTx();
+        txUserService.setTransactionManager(transactionManager);
+        txUserService.setUserService(testUserService);
 
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
 
         try {
-            testUserService.upgradeLevels();
+            txUserService.upgradeLevels();
             fail("TestUserServiceException excepted");
         } catch (TestUserServiceException e) {
             System.out.println("TestUserServiceException raised");
@@ -94,7 +98,7 @@ public class UserServiceTest {
         UserLevelUpgradePolicyImpl userLevelUpgradePolicy = new UserLevelUpgradePolicyImpl();
         userLevelUpgradePolicy.setUserDao(userDao);
         userLevelUpgradePolicy.setMailSender(mockMailSender);
-        userService.setUserLevelUpgradePolicy(userLevelUpgradePolicy);
+        userServiceImpl.setUserLevelUpgradePolicy(userLevelUpgradePolicy);
 
         userService.upgradeLevels();
 
