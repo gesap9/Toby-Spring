@@ -27,7 +27,7 @@
         <property name="userDao" ref="userDao"/>
         <property name="mailSender" ref="mailSender"/>
     </bean>
-    <bean id="mailSender" class="DummyMailSender">
+    <bean id="mailSender" class="MockMailSender">
     </bean>
 
 
