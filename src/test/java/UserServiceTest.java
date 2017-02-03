@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.mockito.Matchers.*;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +50,36 @@ public class UserServiceTest {
                 new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "green@mail.com")
 
         );
+    }
+    @Test
+    public void upgradeAllOrNothingUsingProxy(){
+        TestUserService testUserService = new TestUserService(users.get(3).getId());
+        testUserService.setUserDao(this.userDao);
+        testUserService.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
+
+        TransactionHandler txHandler = new TransactionHandler();
+        txHandler.setTarget(testUserService);
+        txHandler.setTransactionManager(transactionManager);
+        txHandler.setPattern("upgradeLevels");
+
+        UserService txUserService = (UserService) Proxy.newProxyInstance(
+                getClass().getClassLoader(),
+                new Class[]{UserService.class},
+                txHandler
+        );
+
+        userDao.deleteAll();
+        for (User user : users) userDao.add(user);
+
+        try {
+            txUserService.upgradeLevels();
+            fail("TestUserServiceException excepted");
+        } catch (TestUserServiceException e) {
+            System.out.println("TestUserServiceException raised");
+        }
+
+        checkLevelUpgraded(users.get(1), false);
+
     }
 
     @Test
