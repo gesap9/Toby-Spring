@@ -1,8 +1,6 @@
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-
 import java.lang.reflect.Proxy;
-
 /**
  * Created by gesap on 2017-02-03.
  */
@@ -37,7 +35,6 @@ public class TxProxyFactoryBean implements FactoryBean<Object> {
                 getClass().getClassLoader(),
                 new Class[]{serviceInterface},
                 txHandler);
-
     }
 
     public Class<?> getObjectType() {
@@ -47,7 +44,4 @@ public class TxProxyFactoryBean implements FactoryBean<Object> {
     public boolean isSingleton() {
         return false;
     }
-
-
-
 }
