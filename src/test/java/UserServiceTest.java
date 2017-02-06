@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
@@ -37,6 +38,9 @@ public class UserServiceTest {
     private UserLevelUpgradePolicy userLevelUpgradePolicy;
     @Autowired
     PlatformTransactionManager transactionManager;
+    @Autowired
+    ApplicationContext context;
+
 
     List<User> users;
 
