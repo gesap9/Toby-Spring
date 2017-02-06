@@ -56,45 +56,16 @@ public class UserServiceTest {
         );
     }
     @Test
-    public void upgradeAllOrNothingUsingProxy(){
-        TestUserService testUserService = new TestUserService(users.get(3).getId());
-        testUserService.setUserDao(this.userDao);
-        testUserService.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
-
-        TransactionHandler txHandler = new TransactionHandler();
-        txHandler.setTarget(testUserService);
-        txHandler.setTransactionManager(transactionManager);
-        txHandler.setPattern("upgradeLevels");
-
-        UserService txUserService = (UserService) Proxy.newProxyInstance(
-                getClass().getClassLoader(),
-                new Class[]{UserService.class},
-                txHandler
-        );
-
-        userDao.deleteAll();
-        for (User user : users) userDao.add(user);
-
-        try {
-            txUserService.upgradeLevels();
-            fail("TestUserServiceException excepted");
-        } catch (TestUserServiceException e) {
-            System.out.println("TestUserServiceException raised");
-        }
-
-        checkLevelUpgraded(users.get(1), false);
-
-    }
-
-    @Test
+    @DirtiesContext
     public void upgradeAllOrNothing() throws Exception {
         TestUserService testUserService = new TestUserService(users.get(3).getId());
         testUserService.setUserDao(this.userDao);
         testUserService.setUserLevelUpgradePolicy(this.userLevelUpgradePolicy);
 
-        UserServiceTx txUserService = new UserServiceTx();
-        txUserService.setTransactionManager(transactionManager);
-        txUserService.setUserService(testUserService);
+        TxProxyFactoryBean txProxyFactoryBean =
+                context.getBean("&userService", TxProxyFactoryBean.class);
+        txProxyFactoryBean.setTarget(testUserService);
+        UserService txUserService = (UserService) txProxyFactoryBean.getObject();
 
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
@@ -109,6 +80,7 @@ public class UserServiceTest {
         checkLevelUpgraded(users.get(1), false);
 
     }
+
 
     @Test
     public void add() {
