@@ -55,6 +55,11 @@ public class UserServiceTest {
         );
     }
     @Test
+    public void advisorAutoProxyCreator(){
+        assertThat(testUserService, is(java.lang.reflect.Proxy.class));
+
+    }
+    @Test
     public void upgradeAllOrNothing() throws Exception {
         userDao.deleteAll();
         for (User user : users) userDao.add(user);
