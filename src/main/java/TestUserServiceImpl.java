@@ -1,16 +1,10 @@
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import java.util.List;
 
 /**
  * Created by gesap on 2017-01-31.
  */
-public class TestUserService extends UserServiceImpl {
-    private String id;
-    public TestUserService(String id){
-        this.id = id;
-    }
+public class TestUserServiceImpl extends UserServiceImpl {
+    private String id = "madnite1";
 
 
     public void upgradeLevels(){
