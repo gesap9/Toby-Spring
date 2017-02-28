@@ -44,7 +44,6 @@ public class UserServiceTest {
     ApplicationContext context;
 
 
-
     List<User> users;
 
     @Before
@@ -60,8 +59,9 @@ public class UserServiceTest {
     }
 
     @Test
-    public void transactionSync(){
+    public void transactionSync() {
         DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+        txDefinition.setReadOnly(true);
         TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
 
         userService.deleteAll();
@@ -72,12 +72,12 @@ public class UserServiceTest {
     }
 
     @Test(expected = TransientDataAccessResourceException.class)
-    public void readOnlyTransactionAttribute(){
+    public void readOnlyTransactionAttribute() {
         testUserService.getAll();
     }
 
     @Test
-    public void advisorAutoProxyCreator(){
+    public void advisorAutoProxyCreator() {
         System.out.println(testUserService.getClass());
         System.out.println(java.lang.reflect.Proxy.class);
         //java.lang.reflect.Proxy prc = testUserService;
@@ -85,6 +85,7 @@ public class UserServiceTest {
         //assertThat(testUserService, is(java.lang.reflect.Proxy.class));
 
     }
+
     @Test
     public void upgradeAllOrNothing() throws Exception {
         userDao.deleteAll();
@@ -141,21 +142,21 @@ public class UserServiceTest {
         verify(mockUserDao, times(2)).update(Matchers.any(User.class));
         verify(mockUserDao, times(2)).update(Matchers.any(User.class));
         verify(mockUserDao).update(users.get(1));
-        assertThat(users.get(1).getLevel(),is(Level.SILVER));
+        assertThat(users.get(1).getLevel(), is(Level.SILVER));
         verify(mockUserDao).update(users.get(3));
         assertThat(users.get(3).getLevel(), is(Level.GOLD));
 
         ArgumentCaptor<SimpleMailMessage> mailMessageArg = ArgumentCaptor.forClass(SimpleMailMessage.class);
         verify(mockMailSender, times(2)).send(mailMessageArg.capture());
         List<SimpleMailMessage> mailMessages = mailMessageArg.getAllValues();
-        assertThat(mailMessages.get(0).getTo()[0],is(users.get(1).getEmail()));
-        assertThat(mailMessages.get(1).getTo()[0],is(users.get(3).getEmail()));
+        assertThat(mailMessages.get(0).getTo()[0], is(users.get(1).getEmail()));
+        assertThat(mailMessages.get(1).getTo()[0], is(users.get(3).getEmail()));
 
     }
 
     private void checkUserAndLevel(User updated, String expectedId, Level expectedLevel) {
-        assertThat(updated.getId(),is(expectedId));
-        assertThat(updated.getLevel(),is(expectedLevel));
+        assertThat(updated.getId(), is(expectedId));
+        assertThat(updated.getLevel(), is(expectedLevel));
     }
 
     private void checkLevelUpgraded(User user, boolean upgraded) {
