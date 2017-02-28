@@ -13,6 +13,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,7 @@ public class UserServiceTest {
     ApplicationContext context;
 
 
+
     List<User> users;
 
     @Before
@@ -55,6 +58,19 @@ public class UserServiceTest {
 
         );
     }
+
+    @Test
+    public void transactionSync(){
+        DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
+        TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
+
+        userService.deleteAll();
+        userService.add(users.get(0));
+        userService.add(users.get(1));
+
+        transactionManager.commit(txStatus);
+    }
+
     @Test(expected = TransientDataAccessResourceException.class)
     public void readOnlyTransactionAttribute(){
         testUserService.getAll();
