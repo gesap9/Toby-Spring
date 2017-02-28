@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Created by gesap on 2017-01-31.
  */
-public class TestUserServiceImpl extends UserServiceImpl {
+public class TestUserService extends UserServiceImpl {
     private String id = "madnite1";
 
 
@@ -20,5 +20,12 @@ public class TestUserServiceImpl extends UserServiceImpl {
             }
         }
 
+    }
+
+    public List<User> getAll(){
+        for(User user:super.getAll()){
+            super.update(user);
+        }
+        return null;
     }
 }
