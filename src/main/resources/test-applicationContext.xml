@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+>
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
 
@@ -13,10 +16,14 @@
         <property name="mappedName" value="upgrade*"/>
     </bean>-->
 
-    <bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
+    <!--<bean id="transactionPointcut" class="org.springframework.aop.aspectj.AspectJExpressionPointcut">
         <property name="expression" value="execution(* *..*ServiceImpl.upgrade*(..))"/>
-        <!--<property name="expression" value="execution(* *..*TestUserServiceImpl.upgrade*(..))"/>-->
-    </bean>
+        &lt;!&ndash;<property name="expression" value="execution(* *..*TestUserServiceImpl.upgrade*(..))"/>&ndash;&gt;
+    </bean>-->
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* *..*ServiceImpl.upgrade*(..))"/>
+        <aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+    </aop:config>
 
     <bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
         <property name="advice" ref="transactionAdvice"/>
