@@ -1,17 +1,17 @@
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import springbook.Level;
+import springbook.User;
+import springbook.UserDao;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ public class UserDaoTest {
     @Before
     public void setUp() {
         user1 = new User("park", "박성철", "park123",Level.BASIC,1,0, "park@mail.com");
-        user2 = new User("lee", "이노옴", "lee123",Level.SILVER,20,30, "lee@mail.com");
+        user2 = new User("lee", "이노옴", "lee123", Level.SILVER,20,30, "lee@mail.com");
         user3 = new User("kim", "김하가", "kim123",Level.GOLD,33,1,"kim@mail.com");
     }
     @Test

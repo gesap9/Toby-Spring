@@ -3,18 +3,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
-import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import springbook.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -97,9 +96,9 @@ public class UserServiceTest {
 
         try {
             this.testUserService.upgradeLevels();
-            fail("TestUserServiceException excepted");
+            fail("springbook.TestUserServiceException excepted");
         } catch (TestUserServiceException e) {
-            System.out.println("TestUserServiceException raised");
+            System.out.println("springbook.TestUserServiceException raised");
         }
 
         //madnite1

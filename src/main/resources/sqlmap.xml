@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlmap xmlns="http://springbook/sqlmap"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://springbook/sqlmap sqlmap.xsd"
+>
+    <sql key="add">insert</sql>
+    <sql key="get">select</sql>
+    <sql key="delete">delete</sql>
+
+</sqlmap>

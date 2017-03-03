@@ -1,7 +1,8 @@
 import org.junit.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.context.annotation.Bean;
-import sun.reflect.annotation.ExceptionProxy;
+import springbook.AspectBean;
+import springbook.TargetImpl;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -14,7 +15,7 @@ public class AspectjExpressionTest {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression(
                 "execution(public int " +
-                        "TargetImpl.minus(int,int) " +
+                        "springbook.TargetImpl.minus(int,int) " +
                         "throws java.lang.RuntimeException)"
         );
         System.out.println(TargetImpl.class);
