@@ -1,3 +1,6 @@
+import learningTests.Hello;
+import learningTests.HelloTarget;
+import learningTests.HelloUppercase;
 import org.junit.Test;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.Pointcut;

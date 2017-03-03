@@ -1,4 +1,4 @@
-package springbook;
+package learningTests;
 
 /**
  * Created by gesap on 2017-02-03.
