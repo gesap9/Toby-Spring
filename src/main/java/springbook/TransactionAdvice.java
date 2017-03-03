@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Created by gesap on 2017-02-06.
  */
+@Deprecated
 public class TransactionAdvice implements MethodInterceptor {
     private PlatformTransactionManager transactionManager;
 

@@ -1,13 +1,10 @@
-import learningTests.Hello;
-import learningTests.HelloTarget;
-import learningTests.HelloUppercase;
+import learningTests.proxy.*;
 import org.junit.Test;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
-import springbook.*;
 
 import java.lang.reflect.Proxy;
 

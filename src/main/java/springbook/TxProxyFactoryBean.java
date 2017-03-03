@@ -6,6 +6,7 @@ import java.lang.reflect.Proxy;
 /**
  * Created by gesap on 2017-02-03.
  */
+@Deprecated
 public class TxProxyFactoryBean implements FactoryBean<Object> {
     Object target;
     PlatformTransactionManager transactionManager;

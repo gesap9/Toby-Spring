@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="message" class="springbook.MessageFactoryBean">
+    <bean id="message" class="learningTests.factoryBean.MessageFactoryBean">
         <property name="text" value="Factory Bean"/>
     </bean>
 
-    <bean id="message2" class="springbook.MessageFactoryBean">
+    <bean id="message2" class="learningTests.factoryBean.MessageFactoryBean">
         <property name="text" value="Factory Bean2"/>
     </bean>
 </beans>

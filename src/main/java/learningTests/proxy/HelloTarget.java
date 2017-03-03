@@ -1,4 +1,4 @@
-package learningTests;
+package learningTests.proxy;
 
 /**
  * Created by gesap on 2017-02-03.

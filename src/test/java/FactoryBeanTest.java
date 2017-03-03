@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import springbook.Message;
+import learningTests.factoryBean.Message;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

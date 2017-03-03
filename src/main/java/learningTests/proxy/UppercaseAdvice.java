@@ -1,4 +1,4 @@
-package springbook;
+package learningTests.proxy;
 
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;

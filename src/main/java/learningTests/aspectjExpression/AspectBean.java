@@ -1,4 +1,4 @@
-package springbook;
+package learningTests.aspectjExpression;
 
 /**
  * Created by gesap on 2017-02-08.
