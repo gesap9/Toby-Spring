@@ -10,6 +10,12 @@ import java.util.List;
  * Created by gesap on 2017-01-18.
  */
 public class UserDaoJdbc implements UserDao {
+    private SqlService sqlService;
+
+    public void setSqlService(SqlService sqlService) {
+        this.sqlService = sqlService;
+    }
+
     //읽기 전용 정보이기 떄문에 멤버 변수로 사용해도 상관없다.
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
     private JdbcTemplate jdbcTemplate;
@@ -35,36 +41,38 @@ public class UserDaoJdbc implements UserDao {
     //Parameter를 final로 선언해줘야 한다.
     public void add(final User user) {
         this.jdbcTemplate.update(
-                "insert into users(id, name, password, level, login, recommend, email) values(?,?,?,?,?,?,?)"
+                this.sqlService.getSql("userAdd")
                 , user.getId(), user.getName(), user.getPassword()
                 , user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
     }
 
     public void deleteAll() {
-        this.jdbcTemplate.update("delete from users");
+        this.jdbcTemplate.update(this.sqlService.getSql("userDeleteAll"));
     }
 
 
     public int getCount() {
-        return this.jdbcTemplate.queryForInt("select count(*) from users");
+        return this.jdbcTemplate.queryForInt(this.sqlService.getSql("userGetCount"));
     }
 
     public User get(String id) {
-        return this.jdbcTemplate.queryForObject("select * from users where id = ?",
+        return this.jdbcTemplate.queryForObject(
+                this.sqlService.getSql("userGet"),
                 new Object[]{id},
                 userMapper
         );
     }
 
     public List<User> getAll() {
-        return this.jdbcTemplate.query("select * from users order by id",
+        return this.jdbcTemplate.query(
+                this.sqlService.getSql("userGetAll"),
                 userMapper
         );
     }
 
     public void update(User user) {
         this.jdbcTemplate.update(
-                "update users set name = ?, password = ?, level = ?, login = ?, recommend = ?, email = ? where id = ?"
-                ,user.getName(),user.getPassword(),user.getLevel().intValue(),user.login,user.getRecommend(), user.getEmail() ,user.getId());
+                this.sqlService.getSql("userUpdate")
+                , user.getName(), user.getPassword(), user.getLevel().intValue(), user.login, user.getRecommend(), user.getEmail(), user.getId());
     }
 }
