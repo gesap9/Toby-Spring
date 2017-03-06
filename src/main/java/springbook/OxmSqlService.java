@@ -11,6 +11,7 @@ import java.io.IOException;
  * Created by gesap on 2017-03-06.
  */
 public class OxmSqlService implements SqlService {
+    private final BaseSqlService baseSqlService = new BaseSqlService();
     private final OxmSqlReader oxmSqlReder = new OxmSqlReader();
     private SqlRegistry sqlRegistry = new HashMapSqlRegistry();
 
@@ -28,17 +29,15 @@ public class OxmSqlService implements SqlService {
 
     @PostConstruct
     public void loadSql() {
-        this.oxmSqlReder.read(this.sqlRegistry);
+        this.baseSqlService.setSqlReader(this.oxmSqlReder);
+        this.baseSqlService.setSqlRegistry(this.sqlRegistry);
+
+        this.baseSqlService.loadSql();
     }
 
     @Override
     public String getSql(String key) throws SqlRetrievalFailureException {
-        try {
-            return this.sqlRegistry.findSql(key);
-
-        } catch (SqlNotFoundException e) {
-            throw new SqlRetrievalFailureException(e);
-        }
+        return this.baseSqlService.getSql(key);
     }
 
     private class OxmSqlReader implements SqlReader {
