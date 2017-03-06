@@ -45,6 +45,8 @@
         <property name="sqlService" ref="sqlService"/>
     </bean>
     <bean id="sqlService" class="springbook.XmlSqlService">
+        <property name="sqlReader" ref="sqlService"/>
+        <property name="sqlRegistry" ref="sqlService"/>
         <property name="sqlmapFile" value="../sqlmap.xml"/>
     </bean>
 
