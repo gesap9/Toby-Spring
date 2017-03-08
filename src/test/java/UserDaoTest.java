@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+@ContextConfiguration(classes = springbook.TestApplicationContext.class)
 public class UserDaoTest {
 
     @Autowired
