@@ -82,17 +82,21 @@ public class TestApplicationContext {
         return dao;
     }*/
 
+/*
     @Bean
     public UserService userService() {
-        /*<bean id="userService" class="springbook.UserServiceImpl">
+        */
+/*<bean id="userService" class="springbook.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
         <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
-    </bean>*/
+    </bean>*//*
+
         UserServiceImpl service = new UserServiceImpl();
         service.setUserDao(this.userDao);
         service.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
         return service;
     }
+*/
 
     @Bean
     public UserService testUserService() {
