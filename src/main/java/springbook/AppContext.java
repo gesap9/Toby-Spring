@@ -4,21 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.mail.MailSender;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import javax.xml.bind.Unmarshaller;
-import java.sql.Driver;
 
 /**
  * Created by gesap on 2017-03-08.
@@ -29,6 +22,7 @@ import java.sql.Driver;
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
+@Import(SqlServiceContext.class)
 public class AppContext {
     /* XML에 정의된 BEAN을 쓰기 위해 Autowired로 Spring에서 주입받도록 한다.
     @Autowired
@@ -70,51 +64,5 @@ public class AppContext {
 
     }
 
-    @Bean
-    public SqlService sqlService() {
-         /*<bean id="sqlService" class="springbook.OxmSqlService">
-        <property name="unmarshaller" ref="unmarshaller"/>
-        <property name="sqlmap" value="classpath:sqlmap.xml"/>
-        <property name="sqlRegistry" ref="sqlRegistry"/>
 
-    </bean>*/
-        OxmSqlService sqlService = new OxmSqlService();
-        sqlService.setUnmarshaller(unmarshaller());
-        sqlService.setSqlRegistry(sqlRegistry());
-        return sqlService;
-    }
-
-    @Bean
-    public SqlRegistry sqlRegistry() {
-         /*<bean id="sqlRegistry" class="springbook.EmbeddedDbSqlRegistry">
-        <property name="dataSource" ref="embeddedDatabase"/>
-
-    </bean>*/
-        EmbeddedDbSqlRegistry sqlRegistry = new EmbeddedDbSqlRegistry();
-        sqlRegistry.setDataSource(embeddedDatabase());
-        return sqlRegistry;
-    }
-
-    @Bean
-    public org.springframework.oxm.Unmarshaller unmarshaller() {
-  /*      <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="contextPath" value="springbook"/>
-    </bean>*/
-
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("springbook");
-        return marshaller;
-    }
-
-    @Bean
-    public DataSource embeddedDatabase(){
-            /*<jdbc:embedded-database id="embeddedDatabase" type="HSQL">
-        <jdbc:script location="classpath:schema.sql"/>
-    </jdbc:embedded-database>*/
-        return new EmbeddedDatabaseBuilder()
-                .setName("embeddedDatabase")
-                .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("classpath:schema.sql")
-                .build();
-    }
 }
