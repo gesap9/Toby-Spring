@@ -2,6 +2,7 @@ package springbook;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -27,6 +28,7 @@ import java.sql.Driver;
 @ImportResource("/test-applicationContext.xml")*/
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
+@ComponentScan(basePackages = "springbook")
 public class TestApplicationContext {
     /* XML에 정의된 BEAN을 쓰기 위해 Autowired로 Spring에서 주입받도록 한다.
     @Autowired
@@ -36,6 +38,9 @@ public class TestApplicationContext {
     *  Resource는 이름 기준으로 매핑된다.*/
     @Resource
     DataSource embeddedDatabase;
+
+    @Autowired
+    UserDao userDao;
 
     @Bean
     public DataSource dataSource() {
@@ -65,17 +70,17 @@ public class TestApplicationContext {
 
     }
 
-    @Bean
+    /*@Bean
     public UserDao userDao() {
-    /*<bean id="userDao" class="springbook.UserDaoJdbc">
+    *//*<bean id="userDao" class="springbook.UserDaoJdbc">
         <property name="dataSource" ref="dataSource"/>
         <property name="sqlService" ref="sqlService"/>
-    </bean>*/
+    </bean>*//*
         UserDaoJdbc dao = new UserDaoJdbc();
-        /*dao.setDataSource(dataSource());*/
-        /*dao.setSqlService(sqlService());*/
+        *//*dao.setDataSource(dataSource());*//*
+        *//*dao.setSqlService(sqlService());*//*
         return dao;
-    }
+    }*/
 
     @Bean
     public UserService userService() {
@@ -84,7 +89,7 @@ public class TestApplicationContext {
         <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
     </bean>*/
         UserServiceImpl service = new UserServiceImpl();
-        service.setUserDao(userDao());
+        service.setUserDao(this.userDao);
         service.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
         return service;
     }
@@ -93,7 +98,7 @@ public class TestApplicationContext {
     public UserService testUserService() {
         /*<bean id="testUserService" class="springbook.TestUserService" parent="userService"/>*/
         TestUserService testService = new TestUserService();
-        testService.setUserDao(userDao());
+        testService.setUserDao(this.userDao);
         testService.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
         return testService;
     }
@@ -112,7 +117,7 @@ public class TestApplicationContext {
         <property name="mailSender" ref="mailSender"/>
     </bean>*/
         UserLevelUpgradePolicyImpl userLevelUpgradePolicy = new UserLevelUpgradePolicyImpl();
-        userLevelUpgradePolicy.setUserDao(userDao());
+        userLevelUpgradePolicy.setUserDao(this.userDao);
         userLevelUpgradePolicy.setMailSender(mailSender());
         return userLevelUpgradePolicy;
     }
