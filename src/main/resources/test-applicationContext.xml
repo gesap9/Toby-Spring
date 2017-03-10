@@ -12,58 +12,63 @@
                            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
                            "
 >
-    <tx:annotation-driven/>
+    <!--<tx:annotation-driven/>-->
 
-    <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
+<!--    <jdbc:embedded-database id="embeddedDatabase" type="HSQL">
         <jdbc:script location="classpath:schema.sql"/>
-    </jdbc:embedded-database>
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
-    <bean id="testUserService" class="springbook.TestUserService" parent="userService"/>
-    <bean id="userService" class="springbook.UserServiceImpl">
+    </jdbc:embedded-database>-->
+
+
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>-->
+
+    <!--<bean id="userService" class="springbook.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
         <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
-    </bean>
+    </bean>-->
 
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+    <!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
-    </bean>
+    </bean>-->
 
-
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+<!--
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/testdb"/>
         <property name="username" value="com"/>
         <property name="password" value="com01"/>
 
-    </bean>
+    </bean>-->
 
-    <bean id="userLevelUpgradePolicy" class="springbook.UserLevelUpgradePolicyImpl">
+    <!--<bean id="userLevelUpgradePolicy" class="springbook.UserLevelUpgradePolicyImpl">
         <property name="userDao" ref="userDao"/>
         <property name="mailSender" ref="mailSender"/>
-    </bean>
-    <bean id="mailSender" class="springbook.DummyMailSender">
-    </bean>
+    </bean>-->
+    <!--<bean id="mailSender" class="springbook.DummyMailSender">
+    </bean>-->
 
 
-    <bean id="userDao" class="springbook.UserDaoJdbc">
+    <!--<bean id="userDao" class="springbook.UserDaoJdbc">
         <property name="dataSource" ref="dataSource"/>
         <property name="sqlService" ref="sqlService"/>
-    </bean>
-    <bean id="sqlService" class="springbook.OxmSqlService">
+    </bean>-->
+   <!-- <bean id="sqlService" class="springbook.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller"/>
         <property name="sqlmap" value="classpath:sqlmap.xml"/>
         <property name="sqlRegistry" ref="sqlRegistry"/>
 
-    </bean>
-    <bean id="sqlRegistry" class="springbook.EmbeddedDbSqlRegistry">
+    </bean>-->
+    <!--<bean id="testUserService" class="springbook.TestUserService" parent="userService"/>-->
+
+
+   <!-- <bean id="sqlRegistry" class="springbook.EmbeddedDbSqlRegistry">
         <property name="dataSource" ref="embeddedDatabase"/>
 
-    </bean>
+    </bean>-->
 
-    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    <!--<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="contextPath" value="springbook"/>
-    </bean>
+    </bean>-->
 
 
 </beans>
