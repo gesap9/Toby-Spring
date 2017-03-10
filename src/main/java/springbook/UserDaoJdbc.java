@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by gesap on 2017-01-18.
  */
 
-@Component
+@Repository
 public class UserDaoJdbc implements UserDao {
     @Autowired
     private SqlService sqlService;
