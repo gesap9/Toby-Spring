@@ -9,9 +9,7 @@ import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import springbook.Level;
-import springbook.User;
-import springbook.UserDao;
+import springbook.*;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -25,7 +23,7 @@ import static org.junit.Assert.assertThat;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = springbook.TestApplicationContext.class)
+@ContextConfiguration(classes = {TestAppContext.class, AppContext.class})
 public class UserDaoTest {
 
     @Autowired

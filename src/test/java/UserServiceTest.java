@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
  * Created by gesap on 2017-01-31.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = springbook.TestApplicationContext.class)
+@ContextConfiguration(classes = {TestAppContext.class, AppContext.class})
 public class UserServiceTest {
     @Autowired
     UserService userService;

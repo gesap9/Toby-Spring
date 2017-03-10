@@ -29,7 +29,7 @@ import java.sql.Driver;
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
-public class TestApplicationContext {
+public class AppContext {
     /* XML에 정의된 BEAN을 쓰기 위해 Autowired로 Spring에서 주입받도록 한다.
     @Autowired
     SqlService sqlService;*/
@@ -68,62 +68,6 @@ public class TestApplicationContext {
         tm.setDataSource(dataSource());
         return tm;
 
-    }
-
-    /*@Bean
-    public UserDao userDao() {
-    *//*<bean id="userDao" class="springbook.UserDaoJdbc">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="sqlService" ref="sqlService"/>
-    </bean>*//*
-        UserDaoJdbc dao = new UserDaoJdbc();
-        *//*dao.setDataSource(dataSource());*//*
-        *//*dao.setSqlService(sqlService());*//*
-        return dao;
-    }*/
-
-/*
-    @Bean
-    public UserService userService() {
-        */
-/*<bean id="userService" class="springbook.UserServiceImpl">
-        <property name="userDao" ref="userDao"/>
-        <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
-    </bean>*//*
-
-        UserServiceImpl service = new UserServiceImpl();
-        service.setUserDao(this.userDao);
-        service.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
-        return service;
-    }
-*/
-
-    @Bean
-    public UserService testUserService() {
-        /*<bean id="testUserService" class="springbook.TestUserService" parent="userService"/>*/
-        TestUserService testService = new TestUserService();
-        testService.setUserDao(this.userDao);
-        testService.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
-        return testService;
-    }
-
-    @Bean
-    public MailSender mailSender() {
-        /*<bean id="mailSender" class="springbook.DummyMailSender">
-    </bean>*/
-        return new DummyMailSender();
-    }
-
-    @Bean
-    public UserLevelUpgradePolicy userLevelUpgradePolicy() {
-    /*<bean id="userLevelUpgradePolicy" class="springbook.UserLevelUpgradePolicyImpl">
-        <property name="userDao" ref="userDao"/>
-        <property name="mailSender" ref="mailSender"/>
-    </bean>*/
-        UserLevelUpgradePolicyImpl userLevelUpgradePolicy = new UserLevelUpgradePolicyImpl();
-        userLevelUpgradePolicy.setUserDao(this.userDao);
-        userLevelUpgradePolicy.setMailSender(mailSender());
-        return userLevelUpgradePolicy;
     }
 
     @Bean
@@ -167,10 +111,10 @@ public class TestApplicationContext {
             /*<jdbc:embedded-database id="embeddedDatabase" type="HSQL">
         <jdbc:script location="classpath:schema.sql"/>
     </jdbc:embedded-database>*/
-            return new EmbeddedDatabaseBuilder()
-                    .setName("embeddedDatabase")
-                    .setType(EmbeddedDatabaseType.HSQL)
-                    .addScript("classpath:schema.sql")
-                    .build();
+        return new EmbeddedDatabaseBuilder()
+                .setName("embeddedDatabase")
+                .setType(EmbeddedDatabaseType.HSQL)
+                .addScript("classpath:schema.sql")
+                .build();
     }
 }
