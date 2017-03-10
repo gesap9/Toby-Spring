@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -27,7 +28,8 @@ import static org.mockito.Mockito.*;
  * Created by gesap on 2017-01-31.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestAppContext.class, AppContext.class})
+@ActiveProfiles("test")
+@ContextConfiguration(classes = {AppContext.class})
 public class UserServiceTest {
     @Autowired
     UserService userService;

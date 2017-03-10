@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
-@Import(SqlServiceContext.class)
+@Import({SqlServiceContext.class, TestAppContext.class, ProductionAppContext.class})
 public class AppContext {
     /* XML에 정의된 BEAN을 쓰기 위해 Autowired로 Spring에서 주입받도록 한다.
     @Autowired
