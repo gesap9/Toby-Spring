@@ -72,8 +72,8 @@ public class TestApplicationContext {
         <property name="sqlService" ref="sqlService"/>
     </bean>*/
         UserDaoJdbc dao = new UserDaoJdbc();
-        dao.setDataSource(dataSource());
-        dao.setSqlService(sqlService());
+        /*dao.setDataSource(dataSource());*/
+        /*dao.setSqlService(sqlService());*/
         return dao;
     }
 

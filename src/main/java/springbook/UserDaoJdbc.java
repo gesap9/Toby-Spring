@@ -1,5 +1,6 @@
 package springbook;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -12,11 +13,12 @@ import java.util.List;
  * Created by gesap on 2017-01-18.
  */
 public class UserDaoJdbc implements UserDao {
+    @Autowired
     private SqlService sqlService;
 
-    public void setSqlService(SqlService sqlService) {
+    /*public void setSqlService(SqlService sqlService) {
         this.sqlService = sqlService;
-    }
+    }*/
 
     //읽기 전용 정보이기 떄문에 멤버 변수로 사용해도 상관없다.
     //이 변수에는 ConnectionMaker Type의 싱글톤 오브젝트가 들어있다.
@@ -36,7 +38,9 @@ public class UserDaoJdbc implements UserDao {
                 }
             };
 
-    public void setDataSource(DataSource dataSource) {
+    @Autowired /*DataSource를 주입가능한 Bean이 있는지 보고 주입*/
+    public void setDataSource(DataSource dataSource)
+    {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
