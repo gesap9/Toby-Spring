@@ -1,7 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
-import springbook.Level;
-import springbook.User;
+import springbook.biz.Level;
+import springbook.biz.User;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;

@@ -21,7 +21,7 @@
 
     <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>-->
 
-    <!--<bean id="userService" class="springbook.UserServiceImpl">
+    <!--<bean id="userService" class="springbook.biz.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
         <property name="userLevelUpgradePolicy" ref="userLevelUpgradePolicy"/>
     </bean>-->
@@ -40,11 +40,11 @@
 
     </bean>-->
 
-    <!--<bean id="userLevelUpgradePolicy" class="springbook.UserLevelUpgradePolicyImpl">
+    <!--<bean id="userLevelUpgradePolicy" class="springbook.biz.UserLevelUpgradePolicyImpl">
         <property name="userDao" ref="userDao"/>
         <property name="mailSender" ref="mailSender"/>
     </bean>-->
-    <!--<bean id="mailSender" class="springbook.DummyMailSender">
+    <!--<bean id="mailSender" class="springbook.biz.DummyMailSender">
     </bean>-->
 
 
@@ -52,16 +52,16 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="sqlService" ref="sqlService"/>
     </bean>-->
-   <!-- <bean id="sqlService" class="springbook.OxmSqlService">
+   <!-- <bean id="sqlService" class="springbook.sql.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller"/>
         <property name="sqlmap" value="classpath:sqlmap.xml"/>
         <property name="sqlRegistry" ref="sqlRegistry"/>
 
     </bean>-->
-    <!--<bean id="testUserService" class="springbook.TestUserService" parent="userService"/>-->
+    <!--<bean id="testUserService" class="springbook.biz.TestUserService" parent="userService"/>-->
 
 
-   <!-- <bean id="sqlRegistry" class="springbook.EmbeddedDbSqlRegistry">
+   <!-- <bean id="sqlRegistry" class="springbook.sql.EmbeddedDbSqlRegistry">
         <property name="dataSource" ref="embeddedDatabase"/>
 
     </bean>-->

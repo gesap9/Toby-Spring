@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
@@ -10,7 +11,10 @@ import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import springbook.*;
+import springbook.biz.Level;
+import springbook.biz.User;
+import springbook.context.AppContext;
+import springbook.dao.UserDao;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -35,15 +39,25 @@ public class UserDaoTest {
     private User user1;
     private User user2;
     private User user3;
+    @Autowired
+    DefaultListableBeanFactory bf;
 
     @Before
     public void setUp() {
-        user1 = new User("park", "박성철", "park123",Level.BASIC,1,0, "park@mail.com");
-        user2 = new User("lee", "이노옴", "lee123", Level.SILVER,20,30, "lee@mail.com");
-        user3 = new User("kim", "김하가", "kim123",Level.GOLD,33,1,"kim@mail.com");
+        user1 = new User("park", "박성철", "park123", Level.BASIC, 1, 0, "park@mail.com");
+        user2 = new User("lee", "이노옴", "lee123", Level.SILVER, 20, 30, "lee@mail.com");
+        user3 = new User("kim", "김하가", "kim123", Level.GOLD, 33, 1, "kim@mail.com");
     }
+
     @Test
-    public void update(){
+    public void beans(){
+        for(String n : bf.getBeanDefinitionNames()){
+            System.out.println(n + "\t" + bf.getBean(n).getClass().getName());
+        }
+    }
+
+    @Test
+    public void update() {
         dao.deleteAll();
         dao.add(user1);
         dao.add(user2);
@@ -60,12 +74,13 @@ public class UserDaoTest {
         User user1update = dao.get(user1.getId());
         checkSameUser(user1, user1update);
         User user2same = dao.get(user2.getId());
-        checkSameUser(user2,user2same);
+        checkSameUser(user2, user2same);
 
 
     }
+
     @Test
-    public void sqlExceptionTranslate(){
+    public void sqlExceptionTranslate() {
         dao.deleteAll();
 
         try {
@@ -73,7 +88,7 @@ public class UserDaoTest {
             dao.add(user1);
         } catch (DuplicateKeyException e) {
 
-            SQLException sqlEx = (SQLException)e.getRootCause();
+            SQLException sqlEx = (SQLException) e.getRootCause();
             SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(this.dataSource);
 
             /*
@@ -82,14 +97,14 @@ public class UserDaoTest {
                     is(DuplicateKeyException.class));
             로 되어 있는데 이렇게 하면 오류남
             */
-            assertThat(set.translate(null,null,sqlEx),
+            assertThat(set.translate(null, null, sqlEx),
                     CoreMatchers.instanceOf(DuplicateKeyException.class));
         }
 
     }
 
     @Test(expected = DuplicateKeyException.class)
-    public void duplicatedKey(){
+    public void duplicatedKey() {
         dao.deleteAll();
 
         dao.add(user1);
@@ -114,7 +129,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void addAndGet(){
+    public void addAndGet() {
 
         dao.deleteAll();
         assertThat(dao.getCount(), is(0));

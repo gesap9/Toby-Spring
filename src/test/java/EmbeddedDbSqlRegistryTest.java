@@ -3,9 +3,9 @@ import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import springbook.EmbeddedDbSqlRegistry;
-import springbook.SqlUpdateFailureException;
-import springbook.UpdatableSqlRegistry;
+import springbook.sql.EmbeddedDbSqlRegistry;
+import springbook.exception.SqlUpdateFailureException;
+import springbook.sql.UpdatableSqlRegistry;
 
 import java.util.HashMap;
 import java.util.Map;

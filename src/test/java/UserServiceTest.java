@@ -14,7 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import springbook.*;
+import springbook.biz.*;
+import springbook.context.AppContext;
+import springbook.dao.UserDao;
+import springbook.exception.TestUserServiceException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -98,9 +101,9 @@ public class UserServiceTest {
 
         try {
             this.testUserService.upgradeLevels();
-            fail("springbook.TestUserServiceException excepted");
+            fail("springbook.exception.TestUserServiceException excepted");
         } catch (TestUserServiceException e) {
-            System.out.println("springbook.TestUserServiceException raised");
+            System.out.println("springbook.exception.TestUserServiceException raised");
         }
 
         //madnite1

@@ -1,6 +1,6 @@
 import org.junit.Test;
-import springbook.SqlType;
-import springbook.Sqlmap;
+import springbook.sql.SqlType;
+import springbook.sql.Sqlmap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

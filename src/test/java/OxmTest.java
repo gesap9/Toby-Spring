@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import springbook.SqlType;
-import springbook.Sqlmap;
+import springbook.sql.SqlType;
+import springbook.sql.Sqlmap;
 
 import org.springframework.oxm.Unmarshaller;
 import javax.xml.transform.Source;

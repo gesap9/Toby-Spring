@@ -3,16 +3,16 @@
         "http://castor.org/mapping.dtd">
 
 <mapping>
-    <class name="springbook.Sqlmap">
+    <class name="springbook.sql.Sqlmap">
         <map-to xml="sqlmap"/>
-        <field name="sql" type="springbook.SqlType"
+        <field name="sql" type="springbook.sql.SqlType"
                required="true" collection="arraylist">
             <bind-xml name="sql" node="element"/>
 
         </field>
 
     </class>
-    <class name="springbook.SqlType">
+    <class name="springbook.sql.SqlType">
         <map-to xml="sql"/>
         <field name="key" type="string" required="true">
             <bind-xml name="key" node="attribute"/>
