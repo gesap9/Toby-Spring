@@ -1,8 +1,7 @@
 package springbook.context;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springbook.biz.*;
 
 import javax.sql.DataSource;
+import java.sql.Driver;
 
 /**
  * Created by gesap on 2017-03-08.
@@ -26,21 +26,19 @@ import javax.sql.DataSource;
 @PropertySource("/database.properties")
 public class AppContext {
 
-    @Autowired
-    Environment env;
+    @Value("${db.driverClass}") Class<? extends Driver> driverClass;
+    @Value("${db.url}") String url;
+    @Value("${db.username}") String username;
+    @Value("${db.password}") String password;
+
     @Bean
     public DataSource dataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        try{
-            dataSource.setDriverClass((Class<? extends java.sql.Driver>)Class.forName(env.getProperty("db.driverClass")));
 
-        }catch (ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
-
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setUsername(env.getProperty("db.username"));
-        dataSource.setPassword(env.getProperty("db.password"));
+        dataSource.setDriverClass(this.driverClass);
+        dataSource.setUrl(this.url);
+        dataSource.setUsername(this.username);
+        dataSource.setPassword(this.password);
 
         return dataSource;
     }
