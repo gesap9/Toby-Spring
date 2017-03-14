@@ -12,6 +12,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springbook.biz.*;
 import springbook.dao.UserDao;
+import springbook.sql.EnableSqlService;
 import springbook.sql.SqlMapConfig;
 
 import javax.sql.DataSource;
@@ -26,8 +27,8 @@ import java.sql.Driver;
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
-@Import({SqlServiceContext.class})
 @PropertySource("/database.properties")
+@EnableSqlService
 public class AppContext implements SqlMapConfig {
 
     @Value("${db.driverClass}")
