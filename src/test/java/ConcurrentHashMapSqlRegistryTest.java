@@ -6,10 +6,10 @@
 
 import org.junit.Before;
 import org.junit.Test;
-import springbook.ConcurrentHashMapSqlRegistry;
-import springbook.SqlNotFoundException;
-import springbook.SqlUpdateFailureException;
-import springbook.UpdatableSqlRegistry;
+import springbook.sql.ConcurrentHashMapSqlRegistry;
+import springbook.exception.SqlNotFoundException;
+import springbook.exception.SqlUpdateFailureException;
+import springbook.sql.UpdatableSqlRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-public class ConCurrentHashMapSqlRegistryTest {
+public class ConcurrentHashMapSqlRegistryTest {
     UpdatableSqlRegistry sqlRegistry;
 
     @Before
