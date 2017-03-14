@@ -3,7 +3,6 @@ package springbook.sql;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
-import springbook.dao.UserDao;
 import springbook.exception.SqlRetrievalFailureException;
 
 import javax.annotation.PostConstruct;
@@ -45,9 +44,10 @@ public class OxmSqlService implements SqlService {
     }
 
     private class OxmSqlReader implements SqlReader {
-        private final static String DEFAULT_SQLMAP_FILE = "../../sqlmap.xml";
+        //private final static String DEFAULT_SQLMAP_FILE = "../../sqlmap.xml";
+        //private Resource sqlmap = new ClassPathResource(DEFAULT_SQLMAP_FILE, UserDao.class);
 
-        private Resource sqlmap = new ClassPathResource(DEFAULT_SQLMAP_FILE, UserDao.class);
+        private Resource sqlmap = new ClassPathResource("/sqlmap.xml");
 
         public void setSqlmap(Resource sqlmap) {
             this.sqlmap = sqlmap;
