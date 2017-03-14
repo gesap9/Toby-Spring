@@ -1,6 +1,8 @@
 package springbook.context;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -21,30 +23,30 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
 @Import({SqlServiceContext.class})
+@PropertySource("/database.properties")
 public class AppContext {
 
+    @Autowired
+    Environment env;
     @Bean
     public DataSource dataSource() {
-    /*<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost/testdb"/>
-        <property name="username" value="com"/>
-        <property name="password" value="com01"/>
-    </bean>*/
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+        try{
+            dataSource.setDriverClass((Class<? extends java.sql.Driver>)Class.forName(env.getProperty("db.driverClass")));
 
-        dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
-        dataSource.setUrl("jdbc:mysql://localhost/testdb");
-        dataSource.setUsername("com");
-        dataSource.setPassword("com01");
+        }catch (ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+
+        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUsername(env.getProperty("db.username"));
+        dataSource.setPassword(env.getProperty("db.password"));
+
         return dataSource;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager() {
-    /*<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>*/
         DataSourceTransactionManager tm = new DataSourceTransactionManager();
         tm.setDataSource(dataSource());
         return tm;
