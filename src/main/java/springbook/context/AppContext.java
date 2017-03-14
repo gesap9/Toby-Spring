@@ -1,17 +1,14 @@
 package springbook.context;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import springbook.dao.UserDao;
+import springbook.biz.*;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -23,19 +20,8 @@ import javax.sql.DataSource;
 /*<tx:annotation-driven/>*/
 @EnableTransactionManagement
 @ComponentScan(basePackages = "springbook")
-@Import({SqlServiceContext.class, TestAppContext.class, ProductionAppContext.class})
+@Import({SqlServiceContext.class})
 public class AppContext {
-    /* XML에 정의된 BEAN을 쓰기 위해 Autowired로 Spring에서 주입받도록 한다.
-    @Autowired
-    SqlService sqlService;*/
-
-    /* XML에 정의된 Bean을 쓰는데 전용 태그를 사용하고 있기 때문에 Resource로 주입받도록 한다.
-    *  Resource는 이름 기준으로 매핑된다.*/
-    @Resource
-    DataSource embeddedDatabase;
-
-    @Autowired
-    UserDao userDao;
 
     @Bean
     public DataSource dataSource() {
@@ -62,6 +48,41 @@ public class AppContext {
         DataSourceTransactionManager tm = new DataSourceTransactionManager();
         tm.setDataSource(dataSource());
         return tm;
+
+    }
+    @Configuration
+    @Profile("production")
+    public static class ProductionAppContext {
+        @Bean
+        public MailSender mailSender(){
+            JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+            mailSender.setHost("localhost");
+            return mailSender;
+        }
+    }
+
+    @Configuration
+    @Profile("test")
+    public static class TestAppContext {
+        @Bean
+        public UserService testUserService() {
+            TestUserService testService = new TestUserService();
+            //testService.setUserDao(this.userDao);
+            testService.setUserLevelUpgradePolicy(userLevelUpgradePolicy());
+            return testService;
+        }
+
+        @Bean
+        public UserLevelUpgradePolicy userLevelUpgradePolicy() {
+            UserLevelUpgradePolicyImpl userLevelUpgradePolicy = new UserLevelUpgradePolicyImpl();
+            userLevelUpgradePolicy.setMailSender(mailSender());
+            return userLevelUpgradePolicy;
+        }
+
+        @Bean
+        public MailSender mailSender() {
+            return new DummyMailSender();
+        }
 
     }
 

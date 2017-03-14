@@ -1,5 +1,6 @@
 package springbook.biz;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import springbook.dao.UserDao;
@@ -11,6 +12,7 @@ public class UserLevelUpgradePolicyImpl implements UserLevelUpgradePolicy {
     public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
+    @Autowired
     UserDao userDao;
     private MailSender mailSender;
 
