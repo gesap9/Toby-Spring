@@ -2,6 +2,7 @@
 토비의 스프링 소스 실습
 
 Gradle dependency
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile("mysql:mysql-connector-java:5.1.31")
@@ -17,7 +18,5 @@ dependencies {
     compile group:'org.aspectj', name:'aspectjweaver', version:'1.7.3'
     compile group: 'org.springframework', name: 'spring-oxm', version: '3.1.2.RELEASE'
     compile group: 'org.codehaus.castor', name: 'castor', version: '1.2'
-    
     compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.4'
-    
 }
